@@ -50,7 +50,6 @@ def word_response_parser(inpt:dict) -> WordResponseAPI:
 	phonetics:list[Phonetic] = []
 
 	for df in inpt["meanings"][0]["definitions"]:
-		print(df)
 		definitions.append(Definition(
 			definition = df["definition"],
 			synonyms = df["synonyms"],

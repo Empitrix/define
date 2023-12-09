@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
+from src.models import WordResponseAPI
 from src.get_input import get_input
-from src.visual import prt
+from src.utils import get_api_response, scroll_page
+from src.visual import prt, get_display_context
 import subprocess as sp
 import sys
+
 
 # Run less and get the erros
 less_return_code:int = sp.run(
@@ -23,7 +26,12 @@ if word == "":
 	sys.exit()
 
 
-print(f"All Fine!, Input Word: {word}")
+# Get word's data from internter
+response:WordResponseAPI = get_api_response(word)
 
+# Make the page
+context = get_display_context(response)
 
+# Show the text using less
+scroll_page(context, use_less=True)
 
