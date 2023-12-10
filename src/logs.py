@@ -1,7 +1,10 @@
-# class LOGs:
-# 	def __init__(self) -> None:
-# 		self.help = """"""
-# 		self.version = """"""
 class LOGs:
-	help = """Help"""
-	version = """Version"""
+	help = """\
+	Define
+	---------
+	use '-h'  '--help'      for help
+	use '-v'  '--version'   for version
+	use '-nl' '--no-less'   for see output without less.exe
+	use '-d'  '--debug'     for logging
+	""".replace("\t", "").strip() + "\n"
+	version = """Define: 0.1.3"""
