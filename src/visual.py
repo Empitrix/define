@@ -1,12 +1,16 @@
-from rich import style
 from rich.console import Console
 from rich.panel import Panel
 from rich.columns import Columns
 from os import get_terminal_size
 from rich.align import AlignMethod
 from .models import WordResponseAPI
+# from .utils import get_random_color
+# import .utils as utils
+from . import utils as u
+# from .utils import get_color
+# from .utils import get_random_color
 from rich.table import Table
-from rich.style import Style
+from rich.layout import Layout
 from rich.text import Text
 
 
@@ -21,7 +25,7 @@ def __divider(padding=4) -> str:
 	return "─" * (get_terminal_size().columns - padding)
 
 # def __column(children:list, equal=True, expand=True, align:AlignMethod='center') -> Columns:
-# 	return Columns(children, equal=equal, expand=expand, align=align)
+#	return Columns(children, equal=equal, expand=expand, align=align)
 
 def __column(children:list, equal=True, expand=True, align:AlignMethod='center') -> Columns:
 	return Columns(children, equal=equal, expand=expand, align=align)
@@ -29,21 +33,59 @@ def __column(children:list, equal=True, expand=True, align:AlignMethod='center')
 
 def get_display_context(rs:WordResponseAPI) -> str: 
 	
-	# table = Table(title="Examples")
-	# table.add_column("Released", justify="right", style="cyan", no_wrap=True)
-	# table.add_row("Dec 16, 2016", "Rogue One: A Star Wars Story", "$1,332,439,889")
-	
 	speech = Table()
 	speech.add_column("Part of Speech", justify="right", style="cyan", no_wrap=True)
 	speech.add_row(rs.part_of_speech.upper())
 
+
+	layout = Layout()
+
 	with _cnsl.capture() as capture:
-		# _cnsl.print(Panel(__column([
-		# 	# Text("Awesome", style=""),
-		# 	speech,
-		# ])))
-		_cnsl.print(Panel(__column([speech]), title=rs.word.title()))
-		# _cnsl.print(Panel(__column([speech])))
+		# Spliting
+		layout.split_column(
+			Layout(name="upper"),
+			Layout(name="lower")
+		)
+		layout["upper"].split_row(
+			Layout(name="left"),
+			Layout(name="middle"),
+			Layout(name="right")
+		)
+		layout["lower"].split_row(
+			Layout(name="left"),
+			Layout(name="right")
+		)
+		layout["upper"]["left"].split_column(
+			Layout(name="up"),
+			Layout(name="down")
+			# Panel(__column([ex for ex in rs.phonetics]), title="Examples")
+		)
+
+		# Updating
+		layout["upper"]["right"].update(
+			Panel(
+				# Text( "".join([i.example+"\n" for i in rs.definitions]) ),
+				__column([
+					Text(i.example, style=u.get_random_color()) for i in rs.definitions
+					# Text( "".join([i.example+"\n" for i in rs.definitions]) ),
+				], expand=False, align="left"),
+				title="Examples"
+			)
+		)
+		layout["upper"]["left"]["up"].update(
+			Panel(
+				Text(
+					f"{rs.get_pronunciation().text}\n"
+					f'{rs.get_pronunciation().audio if rs.get_pronunciation().audio != "" else "NO VOICE LINK"}'
+				),
+				title="Pronunciation",
+			)
+		)
+		# Updating
+		# layout["lower"]["right"].update(
+		# 	# Panel(__column([ex for ex in rs.phonetics]), title="Examples")
+		# )
+		_cnsl.print(Panel(layout, title=rs.word.title()))
 	return capture.get()
 
 

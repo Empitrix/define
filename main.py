@@ -33,5 +33,5 @@ response:WordResponseAPI = get_api_response(word)
 context = get_display_context(response)
 
 # Show the text using less
-scroll_page(context, use_less=True)
+scroll_page(context, use_less=False)
 

@@ -42,11 +42,16 @@ class WordResponseAPI:
 		self.synonyms = synonyms
 		self.antonyms = antonyms
 
+	def get_pronunciation(self) -> Pronunciation:
+		return self.pronunciation[0]
+
 
 def word_response_parser(inpt:dict) -> WordResponseAPI:
 	"""Convert JSON file into WordResponseAPI"""
 	definitions:list[Definition] = []
 	pronunciation:Pronunciation = Pronunciation(text="", audio="")
+	# global pronunciation
+	# pronunciation:Pronunciation
 	phonetics:list[Phonetic] = []
 
 	for df in inpt["meanings"][0]["definitions"]:

@@ -3,6 +3,7 @@ from subprocess import run
 from requests import get
 from .models import WordResponseAPI, word_response_parser
 from .visual import prt
+from random import choice
 # from models import WordResponseAPI, word_response_parser
 # from visual import prt
 from json import loads
@@ -40,6 +41,18 @@ def scroll_page(inpt:str,use_less:bool=True) -> None:
 	else:
 		print(inpt)
 
+
+color_cache = ""
+def get_random_color(colors:list[str] = ['red', 'blue', 'green']) -> str:
+	"""Get random color for rich"""
+	global color_cache
+	c = ""
+	while 1:
+		c = choice(colors)
+		if c != color_cache:
+			break
+	color_cache = c
+	return c
 
 if __name__ == "__main__":
 	word:WordResponseAPI = get_api_response("Define")
