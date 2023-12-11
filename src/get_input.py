@@ -13,6 +13,12 @@ def get_input(msg:str = "Word: ") -> str:
 	return output
 
 
+def get_input_sys() -> str:
+	output = ""
+	if not sys.stdin.isatty():
+		output = sys.stdin.read().strip()
+	return output
+
 if __name__ == "__main__":
 	name = get_input()
 	print(f"Name: {name}")

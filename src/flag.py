@@ -1,6 +1,7 @@
 import sys
-# from . import logs
-import logs
+from . import logs
+from . import get_input
+# import logs
 
 
 class OPT:
@@ -16,22 +17,22 @@ def check_for_flags() -> OPT:
 	clear_arg = sys.argv.copy()
 	clear_arg.pop(0)  # Removing file name
 
-	otp:OPT = OPT()
+	opt:OPT = OPT()
 
 	if len(args) == 1:
-		return OPT()
-	
-	not_word:list[str] = []
+		opt.word = get_input.get_input()
+		return opt
+
 	if len(args) > 1:
 		for ord in args:
 			arg = ord.strip().lower()
 			
 			# Options
 			if arg == "-nl" or arg == "--no-less":
-				otp.use_less = False
+				opt.use_less = False
 				clear_arg.remove(ord)
 			if arg == "-d" or arg == "--debug":
-				otp.debug = True
+				opt.debug = True
 				clear_arg.remove(ord)
 
 			# Auto
@@ -43,8 +44,13 @@ def check_for_flags() -> OPT:
 				sys.exit()
 
 
-	print("CLEAR LOG LENGTH: ", len(clear_arg))
-	return OPT()
+	if len(clear_arg) == 1:
+		opt.word = clear_arg.pop()
+	else:
+		word = get_input.get_input_sys()
+		if word.strip() == "":
+			opt.word = input("Word: ")
+	return opt
 
 
 if __name__ == "__main__":
