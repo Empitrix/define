@@ -4,15 +4,23 @@ from requests import get
 from .models import WordResponseAPI, word_response_parser
 from .visual import prt
 from random import choice
-# from models import WordResponseAPI, word_response_parser
-# from visual import prt
 from json import loads
 import sys
 
 
-def get_api_response(word:str) -> WordResponseAPI:
+def get_api_response(word:str, debug_mode:bool=False) -> WordResponseAPI:
 	"""Get the input word data from server"""
 	word = word.strip().lower()  # Convert word to lowercase
+	
+	if(debug_mode):
+		response = get(f'https://api.dictionaryapi.dev/api/v2/entries/en/{word.strip()}')
+		if(response.status_code == 200):
+			data = loads(response.text)[0]
+			return word_response_parser(data)
+		else:
+			prt("[red]Error on API")
+			sys.exit()
+
 	try:
 		response = get(f'https://api.dictionaryapi.dev/api/v2/entries/en/{word.strip()}')
 		if(response.status_code == 200):
@@ -23,7 +31,7 @@ def get_api_response(word:str) -> WordResponseAPI:
 			sys.exit()
 	except(Exception,) as error:
 		prt("[red]Something is Wrong, try again later!")
-		prt(f"[red]ERROR: [yellow]{error}")
+		prt(f"[red]ERROR:[white] [yellow]{error}")
 		sys.exit()
 
 
@@ -57,3 +65,4 @@ def get_random_color(colors:list[str] = ['red', 'blue', 'green']) -> str:
 if __name__ == "__main__":
 	word:WordResponseAPI = get_api_response("Define")
 	scroll_page(word.word)
+

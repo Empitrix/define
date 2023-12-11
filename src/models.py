@@ -72,9 +72,10 @@ def word_response_parser(inpt:dict) -> WordResponseAPI:
 			phonetics.append(Phonetic(
 				audio=p["audio"],
 				source_url=p["sourceUrl"],
+				# p["license"]["name"] if "license" in list(p.keys()) else ""
 				file_license = LicenseAPI(
 					name=p["license"]["name"],
-					url=p["license"]["url"])
+					url=p["license"]["url"]) if "license" in list(p.keys()) else LicenseAPI(name="", url="")
 			))
 		else: continue
 
