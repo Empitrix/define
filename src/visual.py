@@ -6,7 +6,7 @@ from rich.align import AlignMethod
 from .models import WordResponseAPI
 # from .utils import get_random_color
 # import .utils as utils
-from . import utils as u
+# from . import utils as u
 # from .utils import get_color
 # from .utils import get_random_color
 from rich.table import Table
@@ -35,7 +35,7 @@ def get_display_context(rs:WordResponseAPI) -> str:
 	
 	speech = Table()
 	speech.add_column("Part of Speech", justify="right", style="cyan", no_wrap=True)
-	speech.add_row(rs.part_of_speech.upper())
+	# speech.add_row(rs.part_of_speech.upper())
 
 
 	layout = Layout()
@@ -66,7 +66,8 @@ def get_display_context(rs:WordResponseAPI) -> str:
 			Panel(
 				# Text( "".join([i.example+"\n" for i in rs.definitions]) ),
 				__column([
-					Text(i.example, style=u.get_random_color()) for i in rs.definitions
+					# Text(i.example, style=u.get_random_color()) for i in rs.definitions
+					# Text(i.example, style=u.get_random_color()) for i in rs.definitions
 					# Text( "".join([i.example+"\n" for i in rs.definitions]) ),
 				], expand=False, align="left"),
 				title="Examples"
@@ -75,8 +76,7 @@ def get_display_context(rs:WordResponseAPI) -> str:
 		layout["upper"]["left"]["up"].update(
 			Panel(
 				Text(
-					f"{rs.get_pronunciation().text}\n"
-					f'{rs.get_pronunciation().audio if rs.get_pronunciation().audio != "" else "NO VOICE LINK"}'
+					f"{rs.phonetic}\n"
 				),
 				title="Pronunciation",
 			)
