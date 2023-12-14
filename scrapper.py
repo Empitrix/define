@@ -11,4 +11,3 @@ with open(PATH, "r") as j_file:
 
 output:WordResponseAPI = word_response_parser(data) 
 
-
