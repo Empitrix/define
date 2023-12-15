@@ -12,6 +12,14 @@ DIVIDER:str = "─"
 ENDLINE:str = (" " * 100)
 _cnsl = Console()
 
+is_used = False
+
+def __get_top_line() -> Text:
+	global is_used
+	if is_used:
+		return Text("\n" + DIVIDER * int(get_terminal_size().columns / 2 - 6), style="bright_black")
+	is_used = True
+	return Text("")
 
 def prt(inpt:str) -> None:
 	"""Print on terminal by colors"""
@@ -37,21 +45,25 @@ def get_display_context(rs:WordResponseAPI) -> str:
 		middle_left:Panel = Panel(__column([
 			__column(
 				[
+					__get_top_line(),
+					# Text("\n" + DIVIDER * int(get_terminal_size().columns / 2 - 6), style="bright_black")
+				] + [
 					Text(f"{DIVIDER} {mean.part_of_speech.upper()} {DIVIDER}", style="red"),
 				] + [
 						__column([
-							Text(f'{d.definition}' + ENDLINE, style="cyan"),
-							Text(f'{d.example}'+ ENDLINE, style="yellow"),
-							Text(f'Antonyms: {d.antonyms}'+ ENDLINE, style="red"),
-							Text(f'Synonyms: {d.synonyms}'+ ENDLINE, style="blue"),
+							Text(f'► {d.definition}' + ENDLINE, style="cyan"),
+							Text(f'• {d.example.strip()}'+ ENDLINE, style="yellow") if d.example != "" else "",
+							Text(f'Antonyms: {d.antonyms}'+ ENDLINE, style="red") if d.antonyms != [] else "",
+							Text(f'Synonyms: {d.synonyms}'+ ENDLINE + "\n", style="blue") if d.synonyms != [] else "",
+							# Text('\n'),
 						], expand=False, align="left") for d in mean.definitions 
 				] + [
 						Panel(__column([
-							Text(f"Antonyms: {mean.antonyms}", style="steel_blue"),
-							Text(f"Synonyms: {mean.synonyms}", style="steel_blue"),
-						], expand=False, align="left"))
+							Text(f"Antonyms: {mean.antonyms}" + ENDLINE, style="steel_blue") if mean.antonyms != [] else "",
+							Text(f"Synonyms: {mean.synonyms}" + ENDLINE, style="steel_blue") if mean.synonyms != [] else "",
+						], expand=False, align="left"), expand=True) if mean.synonyms != [] and mean.antonyms != [] else ""
 				] + [
-					Text(DIVIDER * int(get_terminal_size().columns / 2 - 6), style="bright_black")
+					# Text("\n" + DIVIDER * int(get_terminal_size().columns / 2 - 6), style="bright_black")
 				],
 			expand=False, align="left") for mean in rs.meanings], expand=False, align="left"),
 		title="Meanings", width=int(get_terminal_size().columns / 2) - 1, expand=True)
