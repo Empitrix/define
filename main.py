@@ -6,7 +6,6 @@ from src.flag import check_for_flags, OPT
 import subprocess as sp
 import sys
 
-
 # Run less and get the erros
 less_return_code:int = sp.run(
 	"less --version",
@@ -16,12 +15,7 @@ less_return_code:int = sp.run(
 opts:OPT = check_for_flags()
 word = opts.word
 
-# # If exit have erros close the CLI
-# if less_return_code == 1:
-# 	prt('[red]"Less" is NOT installed!')
-# 	sys.exit()
-# Get the word from user
-# word = get_input()
+# If exit have erros close the CLI
 if word == "":
 	prt('[red]Enter a valid word!')
 	sys.exit()
