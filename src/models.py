@@ -107,7 +107,7 @@ def word_response_parser(inpt:dict) -> WordResponseAPI:
 	for m in inpt["meanings"]:
 		all_meanings.append(Meaning(
 			part_of_speech=m["partOfSpeech"],
-			synonyms=["synonyms"], antonyms=["antonyms"],
+			synonyms=m["synonyms"], antonyms=m["antonyms"],
 			definitions= [__parse_defenation(i) for i in m["definitions"]]
 		))
 
