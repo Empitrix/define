@@ -22,7 +22,7 @@ def __parse_license(inpt:Optional[dict]) -> Optional[LicenseAPI]:
 		return None
 	if inpt["name"] == "": return None
 	if inpt["url"] == "": return None
-	return LicenseAPI(name=inpt["name"], url=inpt["name"])
+	return LicenseAPI(name=inpt["name"], url=inpt["url"])
 
 
 class Definition:
@@ -48,6 +48,7 @@ class Pronunciation:
 			audio:Optional[str]) -> None:
 		self.text = text
 		self.audio = audio
+
 
 class Phonetic:
 	def __init__(self, text:str, audio:Optional[str], source_url:Optional[str],
@@ -94,16 +95,9 @@ class WordResponseAPI:
 def word_response_parser(inpt:dict) -> WordResponseAPI:
 	"""Convert JSON file into WordResponseAPI"""
 	phonetics:list[Phonetic] = []
-	# definitions:list[Definition] = []
-	# for df in inpt["meanings"][0]["definitions"]:
-	# 	definitions.append(Definition(
-	# 		definition = df["definition"],
-	# 		synonyms = df["synonyms"],
-	# 		antonyms = df["antonyms"],
-	# 		example = df["example"] if "example" in list(df.keys()) else "",
-	# 	))
-	# Get all the meanings
 	all_meanings:list[Meaning] = []
+
+	# Get all the meanings
 	for m in inpt["meanings"]:
 		all_meanings.append(Meaning(
 			part_of_speech=m["partOfSpeech"],
@@ -117,10 +111,8 @@ def word_response_parser(inpt:dict) -> WordResponseAPI:
 
 	return WordResponseAPI(
 		word=inpt["word"],
-		# phonetic=inpt["phonetic"],
 		phonetic=inpt["phonetic"][1:-2:],
 		phonetics=phonetics,
-		# phonetics=phonetics[1::-2],
 		meanings=all_meanings,
 		source_urls=inpt["sourceUrls"],
 		file_license=LicenseAPI(
