@@ -25,5 +25,5 @@ python ./main.py
 For this project, you need to set `alias` for `main.py`.  The reason why there is no executable file for different platforms is that Python is actually super slow to use in a CLI, and the project is just an educational test for me.
 
 ## Acknowledgement
-[**Free Dictionary API**](https://github.com/meetDeveloper/freeDictionaryAPI): The main API of the CLI
-[**Rich**](https://github.com/Textualize/rich): Rich is a Python library for rich text and beautiful formatting in the terminal.
+- [**Free Dictionary API**](https://github.com/meetDeveloper/freeDictionaryAPI): The main API of the CLI
+- [**Rich**](https://github.com/Textualize/rich): Rich is a Python library for rich text and beautiful formatting in the terminal.
