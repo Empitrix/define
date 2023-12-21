@@ -17,6 +17,9 @@ def get_api_response(word:str, debug_mode:bool=False) -> WordResponseAPI:
 		if(response.status_code == 200):
 			data = loads(response.text)[0]
 			return word_response_parser(data)
+		elif response.status_code == 404:
+			prt("[red]Word Not Found!")
+			sys.exit()
 		else:
 			prt("[red]Error on API")
 			sys.exit()
@@ -26,6 +29,9 @@ def get_api_response(word:str, debug_mode:bool=False) -> WordResponseAPI:
 		if(response.status_code == 200):
 			data = loads(response.text)[0]
 			return word_response_parser(data)
+		elif response.status_code == 404:
+			prt("[red]Word Not Found!")
+			sys.exit()
 		else:
 			prt("[red]Error on API")
 			sys.exit()
