@@ -1,7 +1,9 @@
 # Define
 A CLI that helps you with defination of the world
 
-## Languages
+## Screenshot
+![Alt text](./screenshot/000.png "Define")
+Suported languages:
 - English
 
 ## Requirements
